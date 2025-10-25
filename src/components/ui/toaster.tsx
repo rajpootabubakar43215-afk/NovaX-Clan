@@ -2,23 +2,13 @@
 
 import * as React from "react"
 import { useTheme } from "next-themes"
-import { toast, Toaster as Sonner } from "sonner"
-
-import { useToast } from "@/hooks/use-toast"
-
-export type Toast = {
-  id: string
-  title?: string
-  description?: string
-  action?: React.ReactNode
-}
+import { Toaster as Sonner } from "sonner"
+import { toast } from "sonner"
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme()
-
-  const { toasts } = useToast()
 
   return (
     <Sonner
@@ -33,17 +23,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
         },
       }}
       {...props}
-    >
-      {toasts.map((t: Toast) => (
-        <Sonner key={t.id}>
-          <div className="grid gap-1">
-            {t.title && <div className="font-medium">{t.title}</div>}
-            {t.description && <div>{t.description}</div>}
-          </div>
-          {t.action}
-        </Sonner>
-      ))}
-    </Sonner>
+    />
   )
 }
 
