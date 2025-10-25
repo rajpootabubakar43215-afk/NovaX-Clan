@@ -19,34 +19,19 @@ type Toaster = {
 // Global ID counter
 let count = 0
 
-// Unique ID generate karta hai
+// Unique ID generate karta hai (use if needed in future)
 function genId() {
   count = (count + 1) % Number.MAX_VALUE
   return count.toString()
 }
 
-// Toast function – toast create karta hai (demo, Sonner integrate kar sakte ho)
-const createToast = (t: Toast) => {
-  const id = genId()
-  const update = (message?: string) => {
-    console.log(`Toast: ${message || t.message || ''}`)
-  }
-
-  update(t.message)
-  return {
-    id,
-    dismiss: () => console.log('Dismiss toast', id),
-    update,
-  }
-}
-
-// Main hook – toasts manage karta hai (no unused 'toast' variable)
+// Main hook – toasts manage karta hai (no unused functions)
 export function useToast(): Toaster {
   const [toasts, setToasts] = React.useState<Toast[]>([])
 
-  // Effect – load pe demo toast (optional, comment out if not needed)
+  // Effect – load pe demo toast add kar sakte ho (optional)
   React.useEffect(() => {
-    // createToast({ id: 'demo', message: 'Hook loaded' })  // Uncomment for test
+    // Example: setToasts(prev => [...prev, { id: genId(), message: 'Hook loaded' }])  // Uncomment for test
   }, [])
 
   return {
