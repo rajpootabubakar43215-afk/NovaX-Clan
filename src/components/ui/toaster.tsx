@@ -4,9 +4,18 @@ import * as React from "react"
 import { useTheme } from "next-themes"
 import { toast, Toaster as Sonner } from "sonner"
 
-import { useToast } from "@/hooks/use-toast" // Import sahi path se
+import { useToast } from "@/hooks/use-toast"
 
-const Toaster = ({ ...props }: React.ComponentProps<typeof Sonner>) => {
+export type Toast = {
+  id: string
+  title?: string
+  description?: string
+  action?: React.ReactNode
+}
+
+type ToasterProps = React.ComponentProps<typeof Sonner>
+
+const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme()
 
   const { toasts } = useToast()
@@ -25,17 +34,15 @@ const Toaster = ({ ...props }: React.ComponentProps<typeof Sonner>) => {
       }}
       {...props}
     >
-      {toasts.map(function ({ id, title, description, action, ...props }) {
-        return (
-          <Sonner key={id} {...props}>
-            <div className="grid gap-1">
-              {title && <div className="font-medium">{title}</div>}
-              {description && <div>{description}</div>}
-            </div>
-            {action}
-          </Sonner>
-        )
-      })}
+      {toasts.map((t: Toast) => (
+        <Sonner key={t.id}>
+          <div className="grid gap-1">
+            {t.title && <div className="font-medium">{t.title}</div>}
+            {t.description && <div>{t.description}</div>}
+          </div>
+          {t.action}
+        </Sonner>
+      ))}
     </Sonner>
   )
 }
