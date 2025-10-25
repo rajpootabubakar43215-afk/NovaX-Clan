@@ -1,23 +1,19 @@
+"use client"
+
+import * as React from "react"
 import { useTheme } from "next-themes"
-import { Toaster as Sonner, toast } from "sonner"
-import { useToast } from "@/components/ui/use-toast" // Yeh hook import sahi kar
+import { toast, Toaster as Sonner } from "sonner"
 
-type ToasterToast = {
-  id: string
-  title?: string
-  description?: string
-  action?: React.ReactNode
-}
+import { useToast } from "@/hooks/use-toast" // Import sahi path se
 
-type ToasterProps = React.ComponentProps<typeof Sonner>
-
-const Toaster = ({ ...props }: ToasterProps) => {
+const Toaster = ({ ...props }: React.ComponentProps<typeof Sonner>) => {
   const { theme = "system" } = useTheme()
-  const { toasts } = useToast() // Ab yeh typed hai
+
+  const { toasts } = useToast()
 
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      theme={theme as "system" | "dark" | "light"}
       className="toaster group"
       toastOptions={{
         classNames: {
@@ -29,16 +25,17 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }}
       {...props}
     >
-      {toasts.map(({ id, title, description, action }: ToasterToast) => (
-        <Toast key={id} {...props}>
-          <div className="grid gap-1">
-            {title && <ToastTitle>{title}</ToastTitle>}
-            {description && <ToastDescription>{description}</ToastDescription>}
-          </div>
-          {action}
-          <ToastClose />
-        </Toast>
-      ))}
+      {toasts.map(function ({ id, title, description, action, ...props }) {
+        return (
+          <Sonner key={id} {...props}>
+            <div className="grid gap-1">
+              {title && <div className="font-medium">{title}</div>}
+              {description && <div>{description}</div>}
+            </div>
+            {action}
+          </Sonner>
+        )
+      })}
     </Sonner>
   )
 }
